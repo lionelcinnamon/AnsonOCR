@@ -100,16 +100,17 @@ phase = 'train'
 
 
 # %%time
+# CHANGE FILE PATH HERE
 from data_utils import load_dataset_ctc
 if phase == 'train':
     print('Training Phase')
-    df_train = load_dataset_ctc(['train.json'], 
+    df_train = load_dataset_ctc(['data/train.json'],
                                factor=4, text_label=text_label) 
     print(len(df_train))
 #     df_test = df_train[df_train['path']] # .map(lambda x: '/fuse/raw/' in x)]
-    df_test = load_dataset_ctc(['val.json'], factor=4, text_label=text_label)
+    df_test = load_dataset_ctc(['data/val.json'], factor=4, text_label=text_label)
 else:
-    df_train = load_dataset_ctc(['val.json'], factor=4, text_label=text_label)
+    df_train = load_dataset_ctc(['data/val.json'], factor=4, text_label=text_label)
     df_test = df_train
     
 print(len(df_train), len(df_test))

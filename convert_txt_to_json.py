@@ -75,6 +75,7 @@ def label_txt_to_json(txt_path, json_path, num_sample=None):
 		
 # -------- ANSON driver 		
 # make json vocab file
+# CHANGE FILE PATH HERE
 vocab_text_path = 'configs/invoice_charset_v2.txt'
 vocab_txt_to_json(vocab_text_path, 'data/charset_v2.json')
 # make json label file
