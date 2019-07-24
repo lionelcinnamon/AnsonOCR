@@ -27,15 +27,13 @@ if __name__ == '__main__':
     label_text = {int(label): text for label, text in read_json(label_text_path).items()}
     text_label = {text:int(label) for label, text in label_text.items()}
 
-
     weights_path = './weights/AnsonOCR-v2.8.0.h5'
-
     LOGDIR = 'weights'
     summary_dir = os.path.join(LOGDIR, 'tb')
     test_project = 'dc3'
 
     batch_size = 16
-    max_train_samples  = None # take all
+    max_train_samples = None # take all
     max_test_samples = None# take all
     max_eval_steps = None
 
@@ -130,7 +128,7 @@ if __name__ == '__main__':
 
     run_data_init([train_initer, test_initer], shuffle=False, sess=sess, batch_size=batch_size)
 
-    basemodel.load_weights('weights/AnsonOCR-v2.8.0.h5')
+    basemodel.load_weights(weights_path)
 
     init_step = sess.run(global_step)
 
