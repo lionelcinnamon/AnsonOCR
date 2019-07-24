@@ -58,7 +58,7 @@ def batch_ratio(preds, targets):
 # In[3]:
 
 
-label_text_path = 'json_path.json'
+label_text_path = 'data/charset_v2.json'
 label_text = {int(label): text for label, text in read_json(label_text_path).items()}
 text_label = {text:int(label) for label, text in label_text.items()}
 

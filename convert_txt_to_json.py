@@ -38,7 +38,7 @@ def vocab_txt_to_json(txt_path, json_path):
             for line in rf.read():
                 vocab_json = vocab_json.append({'label': line}, ignore_index=True)
     vocab_json = vocab_json.to_dict()['label']
-    with open('json_path.json', 'w') as f:
+    with open(json_path, 'w') as f:
         json.dump(vocab_json, f)
 
 def label_txt_to_json(txt_path, json_path, num_sample=None):
@@ -75,14 +75,14 @@ def label_txt_to_json(txt_path, json_path, num_sample=None):
 		
 # -------- ANSON driver 		
 # make json vocab file
-vocab_text_path = 'invoice_charset_v2.txt'
-vocab_txt_to_json(vocab_text_path, 'charset_v2.json')
+vocab_text_path = 'configs/invoice_charset_v2.txt'
+vocab_txt_to_json(vocab_text_path, 'data/charset_v2.json')
 # make json label file
 data_root = 'textline_data/Japanese'
 train_label_text_path = 'textline_data/train.txt'
 val_label_text_path = 'textline_data/val.txt'
-label_txt_to_json(train_label_text_path, 'train.json')
-label_txt_to_json(val_label_text_path, 'val.json')
+label_txt_to_json(train_label_text_path, 'data/train.json')
+label_txt_to_json(val_label_text_path, 'data/val.json')
 
 # ## -----------CONFIG
 # ## make vocab
