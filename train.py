@@ -79,7 +79,7 @@ if __name__ == '__main__':
     imgs, labels, train_paths, train_losses, train_preds = sess.run(train_tensors)
     print(imgs.shape)
     imgs = np.clip(imgs, 0, 1)
-    plot_images(imgs[...,0], mxn=[3,1], dpi=200)
+    # plot_images(imgs[...,0], mxn=[3,1], dpi=200)
 
     # 2. Build model
     from wavenet import build_model
@@ -181,7 +181,7 @@ if __name__ == '__main__':
 
             if g_step % plot_freq == 0:
                 clear_output()
-                plot_images(np.clip(results['inputs_train'][...,0], 0, 1), dpi=100)
+                # plot_images(np.clip(results['inputs_train'][...,0], 0, 1), dpi=100)
 
                 pred_decoded = convert_batch_int_to_text(np.argmax(results['preds_train'], -1), label_text)
                 label_decoded = convert_batch_int_to_text(results['target_train'], label_text, False)
