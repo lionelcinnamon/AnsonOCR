@@ -273,6 +273,7 @@ def build_qa_dataset(mode, output_dir, padding_style, project_name='dc3'):
                 
     json.dump(output_dict, open(label_csv_path, 'w'))
 
+
 def convert_string_to_int(input_string):
     """
         inputs: string
@@ -445,6 +446,7 @@ def create_tf_dataset(df, batch_size, dataset_name=None, learn_space=False, mode
     input_tensors = iterator.get_next()
     return input_tensors, DataIniter(iterator.initializer, index=index ,data_placeholder= data_placeholder) 
 
+
 def run_data_init(initers, shuffle, sess, batch_size):
     """
         
@@ -454,8 +456,6 @@ def run_data_init(initers, shuffle, sess, batch_size):
         if shuffle:
             data = shuffle_by_batch(data, batch_size)
         sess.run(initer.initializer, {initer.data_placeholder: data})
-
-
 
 
 def convert_batch_int_to_text(int_lines, label_text, repeat_colapse=True):
