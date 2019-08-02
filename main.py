@@ -67,6 +67,8 @@ class SagemakerInference(object):
         
         os.system('nvidia-smi')
         # subprocess.run('sh run.sh', shell=True)
+        # TODO: add convert_txt_to_json
+        subprocess.run('python convert_txt_to_json.py', shell=True)       
         subprocess.run('python train.py', shell=True)
 
 

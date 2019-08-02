@@ -56,6 +56,6 @@ RUN ln -s /usr/share/zoneinfo/Asia/Ho_Chi_Minh /etc/localtime
 WORKDIR /opt/ml/code/
 
 # Starts framework
-ENTRYPOINT ["python", "train.py"] 
+ENTRYPOINT ["python", "main.py"] 
 
 # , "--config", "configs/sagemaker_config.json"

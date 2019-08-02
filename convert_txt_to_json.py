@@ -41,33 +41,56 @@ def vocab_txt_to_json(txt_path, json_path):
     with open(json_path, 'w') as f:
         json.dump(vocab_json, f)
 
-def label_txt_to_json(txt_path, json_path, num_sample=None):
+def label_txt_to_json(src_txt_path, tgt_txt_path, json_path, num_sample=None):
     label_json = pandas.DataFrame(columns=['text', 'path', 'name'])
     i_sample = 0
     print('Create {}...'.format(json_path))
-    with open(txt_path, 'r', encoding='utf-8') as rf:  
-        for line in rf.readlines():
-            try:
-                index = line.strip().index("|")
-                impath = line[0:index].strip()
-                imlabel = line[index + 1:].strip()
-                ## add to json
-                # add weight and height
-#                 shape = cv2.imread(os.path.join(data_root, impath)).shape
-# , 'height': shape[0], 'width': shape[1]
+#     with open(txt_path, 'r', encoding='utf-8') as rf:  
+#         for line in rf.readlines():
+#             try:
+#                 index = line.strip().index("|")
+#                 impath = #line[0:index].strip()
+#                 imlabel = #line[index + 1:].strip()
+#                 ## add to json
+#                 # add weight and height
+# #                 shape = cv2.imread(os.path.join(data_root, impath)).shape
+# # , 'height': shape[0], 'width': shape[1]
                 
-                label_json = label_json.append({'text': imlabel, 'name': impath, 'path': os.path.join(data_root, impath)}, ignore_index=True)
-                ## display
-                i_sample += 1
-                if i_sample % 100 == 0:
-                    printr('[{}]'.format(i_sample))
-                ## stop at num_sample
-                if num_sample is not None: ## there is limited number of lines
-                    if i_sample > num_sample:
-                        break
-            except:
-                print(line)
+#                 label_json = label_json.append({'text': imlabel, 'name': impath, 'path': os.path.join(data_root, impath)}, ignore_index=True)
+#                 ## display
+#                 i_sample += 1
+#                 if i_sample % 100 == 0:
+#                     printr('[{}]'.format(i_sample))
+#                 ## stop at num_sample
+#                 if num_sample is not None: ## there is limited number of lines
+#                     if i_sample > num_sample:
+#                         break
+#             except:
+#                 print(line)
             
+    with open('src_txt_path', 'r', encoding='utf-8') as f:
+        src_lines = f.readlines()
+
+    with open('tgt_txt_path', 'r', encoding='utf-8') as f:
+        tgt_lines = f.readlines()
+
+    for src_line, tgt_line in zip(src_lines, tgt_lines):
+        try:
+            impath = src_line[:-1]
+            imlabel = tgt_line[:-1]
+            label_json = label_json.append({'text': imlabel, 'name': impath, 'path': os.path.join(data_root, impath)}, ignore_index=True)
+            ## display
+            i_sample += 1
+            if i_sample % 100 == 0:
+                printr('[{}]'.format(i_sample))
+            ## stop at num_sample
+            if num_sample is not None: ## there is limited number of lines
+                if i_sample > num_sample:
+                    break
+        except:
+            print(src_line, tgt_line)
+
+
     print('--> done.\n')
     label_json = label_json.to_dict()
     with open(json_path, 'w') as f:
@@ -79,11 +102,14 @@ def label_txt_to_json(txt_path, json_path, num_sample=None):
 vocab_text_path = 'configs/invoice_charset_v2.txt'
 vocab_txt_to_json(vocab_text_path, 'data/charset_v2.json')
 # make json label file
-data_root = 'textline_data/Japanese'
-train_label_text_path = 'textline_data/train.txt'
-val_label_text_path = 'textline_data/val.txt'
-label_txt_to_json(train_label_text_path, 'data/train.json')
-label_txt_to_json(val_label_text_path, 'data/val.json')
+data_root = '/opt/ml/input/data/train/data/Japanese'
+src_train_label_text_path = data_root + 'src-train.txt'
+tgt_train_label_text_path = data_root + 'tgt-train.txt'
+
+src_val_label_text_path = data_root + 'src-val.txt'#textline_data/val.txt'
+tgt_val_label_text_path = data_root + 'tgt-val.txt'#textline_data/val.txt'
+label_txt_to_json(src_train_label_text_path, tgt_train_label_text_path, 'data/train.json')
+label_txt_to_json(src_val_label_text_path, tgt_val_label_text_path, 'data/val.json')
 
 # ## -----------CONFIG
 # ## make vocab
