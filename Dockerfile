@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu16.04
+FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
 
 ARG py_version=3
 # Validate that arguments are specified
@@ -35,7 +35,10 @@ ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONIOENCODING=UTF-8 LANG=C.U
 RUN apt-get update \
     && apt-get install -y git 
     
-# RUN pip install --no-cache-dir -r requirements.txt
+# # RUN pip install --no-cache-dir -r requirements.txt
+# RUN pip install --no-cache-dir six numpy scipy Pillow matplotlib scikit-learn scikit-image opencv-python imageio Shapely pandas boto3
+# RUN pip install --no-cache-dir textdistance editdistance kitchen imgaug fonttools tensorboardX pprint
+# RUN pip install --no-cache-dir slackclient==1.3.1 keras==2.2.4 tensorboard==1.12.0 tensorflow-gpu==1.12.0
 
 # Copy the code
 RUN rm -rf /opt/ml/code/
@@ -55,7 +58,8 @@ RUN ln -s /usr/share/zoneinfo/Asia/Ho_Chi_Minh /etc/localtime
 # Specify Working dir
 WORKDIR /opt/ml/code/
 
+ENV export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-9.0/lib64
 # Starts framework
-ENTRYPOINT ["python", "main.py"] 
+ENTRYPOINT ["python", "main.py", "--config", "configs/sagemaker_config.json"]
 
 # , "--config", "configs/sagemaker_config.json"

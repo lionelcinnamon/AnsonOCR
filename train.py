@@ -28,18 +28,19 @@ if __name__ == '__main__':
     text_label = {text:int(label) for label, text in label_text.items()}
 
     weights_path = './weights/AnsonOCR-v2.8.0.h5'
-    LOGDIR = 'weights'
+    LOGDIR = '/opt/ml/model'
     summary_dir = os.path.join(LOGDIR, 'tb')
     test_project = 'dc3'
 
-    batch_size = 16
+    batch_size = 32
     max_train_samples = None # take all
     max_test_samples = None# take all
     max_eval_steps = None
 
-    display_freq = 10
-    save_freq = 5000
+    display_freq = 1000
+    save_freq = 1000
     eval_freq = 1000
+    plot_freq = 1000
 
     K.clear_session()
     sess = K.get_session()
@@ -110,8 +111,8 @@ if __name__ == '__main__':
 
     train_writer = tf.summary.FileWriter(summary_dir,sess.graph)
 
-    display_freq = 20
-    plot_freq = 150
+#     display_freq = 1000
+    
     batch_losses = {'loss_ctc': [], 'loss_ent':[], 'accuracy_train':[], 'accuracy_loc':[]}
 
     saver = tf.train.Saver(keep_checkpoint_every_n_hours=1)
@@ -167,7 +168,7 @@ if __name__ == '__main__':
 
                 summary.value.add(tag='train Accuracy', simple_value=batch_losses['accuracy_train'][-1])
 
-                sum_str = '\rGlobal_step:{}\tLoss-ctc:{:0.5f}\tLoss-ent:{:0.5f}\tAccuracy-train:{:0.2f}\tSpeed:{:0.2f} '.format(
+                sum_str = '\nGlobal_step:{}\tLoss-ctc:{:0.5f}\tLoss-ent:{:0.5f}\tAccuracy-train:{:0.2f}\tSpeed:{:0.2f} '.format(
                                                 results['global_step'],
                                                 np.mean(batch_losses['loss_ctc'][-1000:]),
                                                 -1,#np.mean(batch_losses['loss_ent'][-1000:]),
@@ -183,23 +184,23 @@ if __name__ == '__main__':
                 clear_output()
                 # plot_images(np.clip(results['inputs_train'][...,0], 0, 1), dpi=100)
 
-                pred_decoded = convert_batch_int_to_text(np.argmax(results['preds_train'], -1), label_text)
-                label_decoded = convert_batch_int_to_text(results['target_train'], label_text, False)
+#                 pred_decoded = convert_batch_int_to_text(np.argmax(results['preds_train'], -1), label_text)
+#                 label_decoded = convert_batch_int_to_text(results['target_train'], label_text, False)
 
-                accuracy = batch_ratio(pred_decoded, label_decoded)
-                print('Batch accuracy:', accuracy)
-                for a, b in zip(pred_decoded[:16], label_decoded[:16]):
-                    print('\n',a,'\n',b,'-----------------')
+#                 accuracy = batch_ratio(pred_decoded, label_decoded)
+#                 print('Batch accuracy:', accuracy)
+#                 for a, b in zip(pred_decoded[:16], label_decoded[:16]):
+#                     print('\n',a,'\n',b,'-----------------')
 
             if g_step % save_freq == 0 and g_step > 100:
-                save_path = os.path.join(LOGDIR, 'keras','basemodel_retrain_{}.h5'.format(g_step))
+                save_path = os.path.join(LOGDIR,'basemodel_retrain_{}.h5'.format(g_step))
                 basemodel.save_weights(save_path)
                 os.makedirs(os.path.dirname(save_path), exist_ok=True)
                 saver.save(sess, os.path.join(LOGDIR, 'ckpt'), global_step=global_step)
                 print('Save keras model at:', save_path)
 
         except KeyboardInterrupt:
-            save_path = os.path.join(LOGDIR, 'keras','basemodel_retrain_{}.h5'.format(g_step))
+            save_path = os.path.join(LOGDIR,'basemodel_retrain_{}.h5'.format(g_step))
             saver.save(sess, os.path.join(LOGDIR, 'ckpt'), global_step=global_step)
             break
 

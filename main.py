@@ -34,9 +34,6 @@ class SagemakerInference(object):
                 print("Installing requirements...")
                 subprocess.run("pip install -r {0}".format(\
                     self.configs['requirement_file']), shell=True)
-            if os.path.isfile('setup.py'): 
-                print("Setting up ...")
-                subprocess.run("python setup.py install", shell=True)
 
     def unzip_data(self):
         if self.configs["data_zip_file"]:
@@ -47,7 +44,7 @@ class SagemakerInference(object):
 
     def process(self):
         # import torch 
-        import numpy as np
+        # import numpy as np
         # import torch.backends.cudnn as cudnn
 
         # print('torch.cuda.is_available(): ', torch.cuda.is_available())
@@ -68,7 +65,9 @@ class SagemakerInference(object):
         os.system('nvidia-smi')
         # subprocess.run('sh run.sh', shell=True)
         # TODO: add convert_txt_to_json
+        print("CONVERT TXT TO JSON ...")
         subprocess.run('python convert_txt_to_json.py', shell=True)       
+        print("RUN TRAIN.PY FILE")
         subprocess.run('python train.py', shell=True)
 
 

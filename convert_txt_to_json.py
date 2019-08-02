@@ -68,10 +68,10 @@ def label_txt_to_json(src_txt_path, tgt_txt_path, json_path, num_sample=None):
 #             except:
 #                 print(line)
             
-    with open('src_txt_path', 'r', encoding='utf-8') as f:
+    with open(src_txt_path, 'r', encoding='utf-8') as f:
         src_lines = f.readlines()
 
-    with open('tgt_txt_path', 'r', encoding='utf-8') as f:
+    with open(tgt_txt_path, 'r', encoding='utf-8') as f:
         tgt_lines = f.readlines()
 
     for src_line, tgt_line in zip(src_lines, tgt_lines):
@@ -95,14 +95,14 @@ def label_txt_to_json(src_txt_path, tgt_txt_path, json_path, num_sample=None):
     label_json = label_json.to_dict()
     with open(json_path, 'w') as f:
         json.dump(label_json, f)
-		
-# -------- ANSON driver 		
+        
+# -------- ANSON driver         
 # make json vocab file
 # CHANGE FILE PATH HERE
 vocab_text_path = 'configs/invoice_charset_v2.txt'
 vocab_txt_to_json(vocab_text_path, 'data/charset_v2.json')
 # make json label file
-data_root = '/opt/ml/input/data/train/data/Japanese'
+data_root = '/opt/ml/input/data/train/data/Japanese/'
 src_train_label_text_path = data_root + 'src-train.txt'
 tgt_train_label_text_path = data_root + 'tgt-train.txt'
 
